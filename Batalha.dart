@@ -1,51 +1,57 @@
 import 'dart:math';
 
+import 'Guerreiro.dart';
+import 'Mago.dart';
 import 'Personagem.dart';
 
 class Batalha {
   bool fimDaBatalha = false;
 
-  void batalhar(Personagem personagem1, Personagem personagem2) {
-    var random = new Random();
+  var random = new Random();
 
-    while (this.fimDaBatalha == false) {
-      //personagem 1 = guerreiro, personagem 2 = mago
-      //personagem1 ataca primeiro
-      var rolagemAtaque = 0;
+  bool batalhar(List<Personagem> personagens) {
+    var ataqueClasse =
+        _verificaClasse(personagens[0]); // Verifica classe e retorna o ataque
 
-      rolagemAtaque = random.nextInt(personagem1.forcaFisica);
-      personagem2.vida = personagem2.vida - rolagemAtaque;
+    var dano = _rolarDadoAtaque(ataqueClasse); //Rola o ataque
 
-      this.printaVida(personagem1, personagem2);
+    personagens[1].vida -= dano; //Deduz da vida do personagem atacado
 
-      this.fimDaBatalha = this.verificaFimDaBatalha(personagem2);
+    _printaVida(personagens[0], personagens[1],
+        dano); //Mostra os pontos de vida e dano da rodada
 
-      if (this.fimDaBatalha == true) {
-        break;
-      }
+    return _verificaMorte(
+        personagens[1]); // Verifica se o personagem defensor morreu
+  }
 
-      rolagemAtaque = random.nextInt(personagem2.forcaMagica);
-      personagem1.vida = personagem1.vida - rolagemAtaque;
-
-      this.printaVida(personagem1, personagem2);
-
-      this.fimDaBatalha = this.verificaFimDaBatalha(personagem1);
+  int _verificaClasse(Personagem personagem) {
+    if (personagem is Guerreiro) {
+      return personagem.forcaFisica;
+    } else if (personagem is Mago) {
+      return personagem.forcaMagica;
+    } else {
+      return personagem.forcaFisica + personagem.forcaMagica;
     }
   }
 
+  int _rolarDadoAtaque(int dado) {
+    return this.random.nextInt(dado);
+  }
 
-  bool verificaFimDaBatalha(Personagem personagem) {
+  bool _verificaMorte(Personagem personagem) {
     if (personagem.vida <= 0) {
+      print("\n ${personagem.nome} morreu");
       return true;
     }
     return false;
   }
 
-
-
-  void printaVida(Personagem personagem1, Personagem personagem2) {
-    print(
-        "Vida Gerreiro: ${personagem1.vida} \n Vida Mago: ${personagem2.vida}");
+  void _printaVida(Personagem personagem1, Personagem personagem2, int dano) {
     print("\n");
+    print("Atacante ${personagem1.nome} causou ${dano} pontos de dano ao Defensor ${personagem2.nome} \n");
+    print(
+        "${personagem1.nome} tem ${personagem1.vida} pontos de vida");
+    print(
+        "${personagem2.nome} tem ${personagem2.vida} pontos de vida");
   }
 }

@@ -1,19 +1,44 @@
 import 'Batalha.dart';
 import "Guerreiro.dart";
 import "Mago.dart";
-import "Elfo.dart";
+import 'Personagem.dart';
 
 void main() {
-  Guerreiro guerreiro = Guerreiro('Hercules', 10, 10, 0);
+  //Instanciando os dois personagens
+  Guerreiro guerreiro = Guerreiro('Hercules o Guerreiro', 20, 7, 0);
+  Mago mago = Mago('Harry o Mago', 8, 0, 12);
 
-  Mago mago = Mago('Harry', 5, 0, 15);
+  //Instanciando a classe de batalha
+  Batalha batalha = new Batalha();
 
-  //Elfo não será utilizado
+  //Variavel que verifica o fim da batalha
+  var fimDaBatalha = false;
+
+  //Define a lista de personagens que irão batalhar
+  List<Personagem> personagens = [guerreiro, mago];
+
+  do {
+    //Inverte o os personagens da lista a cada turno
+    //para mudar o atacante
+    var personagensInvertidos = _inverterPersonagens(personagens);
+
+    //Se o defensor morrer na batalha, fimDaBatalha setara para true;
+    fimDaBatalha = batalha.batalhar(personagensInvertidos);
+
+  } while (fimDaBatalha == false); //Enquanto fim da batalha false continua executando
+}
+
+List<Personagem> _inverterPersonagens(List<Personagem> personagens) {
+  var personagem = personagens[0];
+  personagens[0] = personagens[1];
+  personagens[1] = personagem;
+  return personagens;
+}
+
+  //Elfo não será utilizado por enquanto
   // Elfo elfo = Elfo('Dobby', 7, 6, 6);
 
-  Batalha batalha = new Batalha();
-  batalha.batalhar(guerreiro, mago);
-
+//PRINTS FICAM PARA OUTRO MOMENTO
   // print('O guerreiro se chama ${guerreiro.nome}, possui vida de ${guerreiro.vida} e poder de ${guerreiro.forcaFisica + guerreiro.forcaMagica}');
   // print('Ao ser equipado com o escudo sua vida aumenta em ${guerreiro.proteger()}');
   // print('Ao ser equipado com a espada seu poder aumenta em ${guerreiro.atacar()}');
@@ -23,4 +48,3 @@ void main() {
   // print('');
   // print('O elfo se chama ${elfo.nome}, possui vida de ${elfo.vida} e poder de ${elfo.forcaFisica + elfo.forcaMagica}');
   // print('Ao ser equipado com o arco e flexa seu pdoer aumenta em ${elfo.ataque()}');
-}
