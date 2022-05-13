@@ -1,14 +1,15 @@
 import "Personagem.dart";
 
-class Mago extends Personagem with varinhaMagica {
-  Mago(String nome, int vida, int forcaFisica, int forcaMagica)
-      : super(nome, vida, forcaFisica, forcaMagica);
+class Mago extends Personagem with VarinhaMagica {
+  Mago(
+      String nome, int vida, int forcaFisica, int forcaMagica, int defesaBasica)
+      : super(nome, vida, forcaFisica, forcaMagica, defesaBasica);
 }
 
-mixin varinhaMagica {
-  int magia = 250;
+mixin VarinhaMagica {
+  int magia = 6 + 4;
 
-  int magica() {
+  int varinhaMagica() {
     return magia;
   }
 }
